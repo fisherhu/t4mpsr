@@ -84,7 +84,7 @@ on t.id = i.tid
 
     function GetTenantBalanceByID($id) {
         try {
-            foreach ($this->pdo->query("select sum(incomes.amount) -  (select sum(expenses.amount) from expenses where tid=$id) as bal from incomes where tid=$id;") as $row)
+            foreach ($this->pdo->query("select coalesce(sum(incomes.amount),0) -  (select coalesce(sum(expenses.amount),0) from expenses where tid=$id) as bal from incomes where tid=$id;") as $row)
                 $rows[] = $row;
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage();
@@ -110,8 +110,11 @@ on t.id = i.tid
 
     function GetAllTenantList() {
         try {
-            foreach ($this->pdo->query("select * from tenants;") as $row)
+            foreach ($this->pdo->query("select * from tenants;") as $row) {
+                $str = $row['id'] . $row['name'] . T4MPSR_SALT;
+                $row['key'] = md5($str);
                 $rows[] = $row;
+            }
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage();
             return false;
@@ -177,7 +180,7 @@ on t.id = i.tid
      * Retrieves the tenant groups' list from the database
      * @return The tenant geoups' list
      */
-    function GetTenantGroupList() {
+    function getTenantGroupList() {
         try {
             foreach ($this->pdo->query("select * from tenant_groups;") as $row)
                 $rows[] = $row;

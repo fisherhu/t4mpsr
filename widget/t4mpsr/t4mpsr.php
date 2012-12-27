@@ -2,14 +2,52 @@
 /**
  * Plugin Name: t4mpsr balance widhet
  * Description: desc
- * Version: 0.0
+ * Version: 0.14
  * Author: Fisher
  * Author uri: http://blog.fisher.hu
  */
 
 
 add_action( 'widgets_init', 't4mpsr_widget' );
+add_action('show_user_profile', 't4mpsr_extra_user_profile_fields' );
+add_action('edit_user_profile', 't4mpsr_extra_user_profile_fields' );
+add_action( 'personal_options_update', 't4mpsr_save_extra_user_profile_fields' );
+add_action( 'edit_user_profile_update', 't4mpsr_save_extra_user_profile_fields' );
 
+function t4mpsr_extra_user_profile_fields( $user ) {
+?>
+  <h3><?php _e("t4mpsr settings", "blank"); ?></h3>
+  <table class="form-table">
+    <tr>
+      <th><label for="phone"><?php _e("URL"); ?></label></th>
+      <td>
+        <input type="text" name="t4mpsrurl" id="t4mpsrurl" class="regular-text" 
+            value="<?php echo esc_attr( get_the_author_meta( 't4mpsrurl', $user->ID ) ); ?>" /><br />
+        <span class="description"><?php _e("Enter the t4mpsr site url."); ?></span>
+    </td>
+    </tr>
+    <tr>
+      <th><label for="phone"><?php _e("Key"); ?></label></th>
+      <td>
+        <input type="text" name="t4mpsrkey" id="t4mpsrkey" class="regular-text" 
+            value="<?php echo esc_attr( get_the_author_meta( 't4mpsrkey', $user->ID ) ); ?>" /><br />
+        <span class="description"><?php _e("Enter the t4mpsr site key."); ?></span>
+        </td>
+    </tr>
+  </table>
+<?php
+}
+
+function t4mpsr_save_extra_user_profile_fields( $user_id ) {
+  $saved = false;
+  if ( current_user_can( 'edit_user', $user_id ) ) {
+    update_user_meta( $user_id, 't4mpsrurl', $_POST['t4mpsrurl'] );
+    update_user_meta( $user_id, 't4mpsrkey', $_POST['t4mpsrkey'] );
+    $saved = true;
+  }
+  return true;
+}
+/* " - mc syntax highlight restore */
 
 function t4mpsr_widget() {
 	register_widget( 'T4MPSR_Widget' );
@@ -30,14 +68,16 @@ class T4MPSR_Widget extends WP_Widget {
 
 		//Our variables from the widget settings.
 		$title = apply_filters('widget_title', $instance['title'] );
-		$url = $instance['url'];
-		$key = $instance['key'];
+		$url = get_the_author_meta( 't4mpsrurl', $user->ID );
+		$key = get_the_author_meta( 't4mpsrkey', $user->ID );
+		$title = 'Balance';
+		
+		if ( is_user_logged_in()) {
 
 		echo $before_widget;
 
 		if ( $title )
 			echo $before_title . $title . $after_title;
-
 
 		$response = wp_remote_post( $url, array(
 			'method' => 'POST',
@@ -54,7 +94,8 @@ class T4MPSR_Widget extends WP_Widget {
 		if( is_wp_error( $response ) ) {
 		    echo 'Something went wrong!';
 		} else {
-		   print_r( $response['body']);
+		   print_r($response['body']);
+		   
 		}
 		// Display the widget title 
 
@@ -64,44 +105,8 @@ class T4MPSR_Widget extends WP_Widget {
 
 		
 		echo $after_widget;
+		}
 	}
-
-	//Update the widget 
-	 
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-
-		//Strip tags from title and name to remove HTML 
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		$instance['url'] = strip_tags( $new_instance['url'] );
-		$instance['key'] = strip_tags( $new_instance['key'] );
-		return $instance;
 	}
-
-	
-	function form( $instance ) {
-
-		//Set up some default widget settings.
-		$defaults = array( 'title' => __('balance', 't4mpsr'), 'url' => __('http://hu3.hu/bubu/baba', 't4mpsr'));
-		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
-
-		//Widget Title: Text Input.
-		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 't4mpsr'); ?></label>
-			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>" style="width:100%;" />
-		</p>
-
-		//Text Input.
-		<p>
-			<label for="<?php echo $this->get_field_id( 'url' ); ?>"><?php _e('App URI:', 't4mpsr'); ?></label>
-			<input id="<?php echo $this->get_field_id( 'url' ); ?>" name="<?php echo $this->get_field_name( 'url' ); ?>" value="<?php echo $instance['url']; ?>" style="width:100%;" />
-		</p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'key' ); ?>"><?php _e('App key:', 't4mpsr'); ?></label>
-			<input id="<?php echo $this->get_field_id( 'key' ); ?>" name="<?php echo $this->get_field_name( 'key' ); ?>" value="<?php echo $instance['key']; ?>" style="width:100%;" />
-		</p>
-	<?php
-	}
-}
 
 ?>
