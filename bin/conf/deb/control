@@ -1,0 +1,12 @@
+Source: t4mpsr
+Maintainer: Fisher <fisher@fisher.hu>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 8)
+
+Package: t4mpsr
+Architecture: all
+Depends: httpd, php5, php5-mysql, mysql-client
+Description: Tool for mutual studio rent
+

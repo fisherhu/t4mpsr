@@ -1,0 +1,13 @@
+Tool for mutual photo studio rent
+t4mpsr
+
+
+An expense occur
+----------------
+The expense divided between the tenants, joint tenants.
+The expense added to each tenant.
+
+A payment occur
+---------------
+
+The payment added to tenant

@@ -1,0 +1,20 @@
+Functions:
+
+- tenants, joint tenants
+- expenses (rent, rezsi)
+- payments
+- spares
+
+= Table [tenants]
+- id
+- name
+- active
+
+= Table [transfer]
+- id
+- tid
+- datetime
+- amount
+- direction
+
+= On delete 

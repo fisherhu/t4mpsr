@@ -1,0 +1,8 @@
+config.php          /usr/share/t4mpsr
+css                 /usr/share/t4mpsr
+doc                 /usr/share/t4mpsr
+etc                 /usr/share/t4mpsr
+index.php           /usr/share/t4mpsr
+lang                /usr/share/t4mpsr
+lib                 /usr/share/t4mpsr
+templates           /usr/share/t4mpsr
