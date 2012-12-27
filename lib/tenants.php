@@ -177,7 +177,7 @@ on t.id = i.tid
      * Retrieves the tenant groups' list from the database
      * @return The tenant geoups' list
      */
-    function GetTenantGroupList() {
+    function getTenantGroupList() {
         try {
             foreach ($this->pdo->query("select * from tenant_groups;") as $row)
                 $rows[] = $row;
@@ -187,7 +187,7 @@ on t.id = i.tid
         }
         return $rows;
     }
-
+    
     /**
      * Inserts a new tenant into the database.
      *
