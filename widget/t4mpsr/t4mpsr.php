@@ -2,7 +2,7 @@
 /**
  * Plugin Name: t4mpsr balance widhet
  * Description: desc
- * Version: 0.13
+ * Version: 0.14
  * Author: Fisher
  * Author uri: http://blog.fisher.hu
  */
