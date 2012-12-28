@@ -1,6 +1,9 @@
 {* smarty *}
 
 <script type="text/javascript">
+
+var popUpWindow = document.getElementById('popup');
+
 function ChangeInput(ElementID){
     FormData='' +
     '<input type="text" name="name" id="new_user_name" style="margin:0px;padding:0px;font-size:28px;"/>' +
@@ -8,6 +11,14 @@ function ChangeInput(ElementID){
 
     document.getElementById(ElementID).innerHTML = FormData;
     document.getElementById('plus').style.visibility='hidden';
+}
+
+popUpWindow.onclick = function() { this.style.visibility='hidden' };
+
+function popUp(tkey) {
+
+  window.prompt('Ctrl-C top copy the tenant key:', tkey);
+
 }
 </script>
 
@@ -57,7 +68,7 @@ function ChangeInput(ElementID){
        <div class="checkmark" OnClick="document.usermod.submit();">
         &#10003;
        </div>
-       <div class="checkmark" OnClick="document.usermod.submit();">
+       <div class="checkmark" OnClick="popUp('{$entry.key}');">
         &#9990
        </div>
 
