@@ -84,7 +84,29 @@ on t.id = i.tid
 
     function GetTenantBalanceByID($id) {
         try {
-            foreach ($this->pdo->query("select coalesce(sum(incomes.amount),0) -  (select coalesce(sum(expenses.amount),0) from expenses where tid=$id) as bal from incomes where tid=$id;") as $row)
+            foreach ($this->pdo->query("select coalesce(sum(incomes.amount),0) - (select coalesce(sum(expenses.amount),0) from expenses where tid=$id) as bal from incomes where tid=$id;") as $row)
+                $rows[] = $row;
+        } catch (PDOException $e) {
+            print "Error!: " . $e->getMessage();
+            return false;
+        }
+        return $row['bal'];
+    }
+
+    function GetGlobalBalance() {
+        try {
+            foreach ($this->pdo->query("select sum(incomes.amount) - (select sum(expenses.amount) from expenses) as bal from incomes;") as $row)
+                $rows[] = $row;
+        } catch (PDOException $e) {
+            print "Error!: " . $e->getMessage();
+            return false;
+        }
+        return $row['bal'];
+    }
+
+    function GetGlobalSpares() {
+        try {
+            foreach ($this->pdo->query("select sum(amount) as bal from spares;") as $row)
                 $rows[] = $row;
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage();
@@ -323,21 +345,21 @@ on t.id = i.tid
     function getKeyInfo($key) {
         // Get all tenants including the inactive ones
         $tl = $this->GetAllTenantList();
-        // var_dump($key);
-        // var_dump($tb);
 
         foreach ($tl as $tenant) {
             $id = $tenant['id'];
             $name = $tenant['name'];
             $str = $id . $name . T4MPSR_SALT;
             $hash = md5($str);
-            // print md5($str) . "\n" . $key . "\n";
-            // var_dump(md5($tr));
             if ($key == $hash) {
                 $tb = $this->GetTenantBalanceByID($id);
+                $gb = $this->GetGlobalBalance();
+                $gs = $this->GetGlobalSpares();
                 // var_dump($tb);
                 // Print the user balance, 1st line
                 print $tb . "\n";
+                print $gb . "\n";
+                print $gs . "\n";
             }
         }
         return true;
