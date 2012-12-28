@@ -15,21 +15,23 @@ require_once(__DIR__ . '/lang/strings.' . LANG . '.php');
 $smarty = new Smarty();
 
 define('T4MPSR_DIR', getcwd() . '/');
+
 // smarty configuration
 
 class t4mpsr_smarty extends Smarty {
+
     function __construct() {
-      parent::__construct();
-      $this->setTemplateDir(T4MPSR_DIR . 'templates');
-      $this->setCompileDir(T4MPSR_DIR . 'templates_c');
-      $this->setConfigDir(T4MPSR_DIR . 'configs');
-      $this->setCacheDir(T4MPSR_DIR . 'cache');
+        parent::__construct();
+        $this->setTemplateDir(T4MPSR_DIR . 'templates');
+        $this->setCompileDir(T4MPSR_DIR . 'templates_c');
+        $this->setConfigDir(T4MPSR_DIR . 'configs');
+        $this->setCacheDir(T4MPSR_DIR . 'cache');
     }
+
 }
 
 // Define some constants to force the (humans) to use
 // the same string several places.
 define('DRPDWN', 'dropdown');
 define('ROUND_FACTOR', 1);
-
 ?>
