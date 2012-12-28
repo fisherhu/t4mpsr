@@ -94,7 +94,7 @@ class t4mpsrTenantsPage {
         $this->tpl->assign('data', $this->t4mpsrMM->GetEntries());
         $this->tpl->assign('roundfactor', ROUND_FACTOR);
         $this->tpl->assign('tenants', $this->t4mpsrTenants->GetTenantList());
-        $this->tpl->assign('tenantgroups', $this->t4mpsrTenants->GetTenantGroupList());
+        $this->tpl->assign('tenantgroups', $this->t4mpsrTenants->getTenantGroupList());
         $this->tpl->assign('indiviualtenants', $this->t4mpsrTenants->GetIndividualTenants());
         $this->tpl->assign('tenantgroupmembers', $this->t4mpsrTenants->GetTenantGroups());
         $this->tpl->assign('time', time());
@@ -192,7 +192,7 @@ class t4mpsrTenantsPage {
         // Process template
         $this->tpl->assign('data', $this->t4mpsrMM->GetEntries());
         $this->tpl->assign('tenant', $this->t4mpsrTenants->GetAllTenantList());
-        $this->tpl->assign('tenantgroup', $this->t4mpsrTenants->GetTenantGroupList());
+        $this->tpl->assign('tenantgroup', $this->t4mpsrTenants->getTenantGroupList());
         $this->tpl->assign('time', time());
         $this->tpl->assign('dropdown', DRPDWN);
         $this->tpl->display('edittenantpage.tpl');
