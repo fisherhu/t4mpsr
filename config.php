@@ -4,6 +4,7 @@
 define("LANG", "en");
 
 define('T4MPSR_SALT', 'bubuka');
+define('T4MPSR_PASS', 't4pass');
 
 require("smarty3/Smarty.class.php");
 

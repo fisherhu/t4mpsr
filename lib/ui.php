@@ -43,13 +43,23 @@ class t4mpsrMainPage {
         $this->tpl = new t4mpsr_smarty;
 
         // Load main menu
-        $t4mpsrMM = new t4mpsrMainMenu;
+        $this->t4mpsrMM = new t4mpsrMainMenu;
+    }
 
+function MainPage() {
         // Draws the MainMenu for the MainPage
-        $this->tpl->assign('data', $t4mpsrMM->GetEntries());
+        $this->tpl->assign('data', $this->t4mpsrMM->GetEntries());
         $this->tpl->assign('time', time());
         $this->tpl->display('mainpage.tpl');
     }
+
+function LoginForm() {
+    // Process template
+    $this->tpl->assign('data', $this->t4mpsrMM->GetEntries());
+    $this->tpl->assign('time', time());
+    $this->tpl->assign('login', 'oyeah');
+    $this->tpl->display('mainpage.tpl');
+ }
 
 }
 

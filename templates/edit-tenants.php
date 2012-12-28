@@ -1,1 +1,0 @@
-edit-tenants.tpl
