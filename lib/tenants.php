@@ -190,7 +190,7 @@ on t.id = i.tid
         }
         return $rows;
     }
-    
+
     /**
      * Inserts a new tenant into the database.
      *
