@@ -4,7 +4,7 @@
 
 {include file='subpage-menu.tpl'}
  <div class="clear"></div>
-{if {$message} != '' }{$message}{/if}
+{if {$message} != ''}{$message}{/if}
 <form  name="addexpensecheck" method="post" action="{$SCRIPT_NAME}" style="padding:0px; margin:0px;">
 
  <div class="actualNames">

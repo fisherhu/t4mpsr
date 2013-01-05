@@ -25,5 +25,10 @@ function getsupport ( menuaction )
 
 {/foreach}
 </ul>
-</div>
 </form>
+
+{if $login == 'yes'}
+{include file='login.tpl'}
+{/if}
+
+</div>

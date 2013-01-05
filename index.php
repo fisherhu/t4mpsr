@@ -1,7 +1,7 @@
 <?php
 
 header("Cache-Control: no-cache, must-revalidate");
-header('Content-type: text/html; charset=utf-8');
+header("Content-type: text/html; charset=utf-8");
 
 require_once('config.php');
 require_once('lib/tenants.php');
@@ -13,11 +13,9 @@ require_once('lib/ui.php');
 $_action = isset($_POST['menuitem']) ? $_POST['menuitem'] : 'mainpage';
 
 
-$saltedpasshass=md5(T4MPSR_PASS . T4MPSR_SALT);
+$saltedpasshash=md5(T4MPSR_PASS . T4MPSR_SALT);
 
-// Cookie voodoo
-if ( isset($_COOKIE['t4mpsrauth']) && $_COOKIE['t4mpsrauth'] == $saltedpasshass ) {
-print('haha');
+// var_dump($_COOKIE);
 switch ($_action) {
     case 'confirmexpense':
         // display the tenant table
@@ -121,19 +119,4 @@ switch ($_action) {
         $t4mpsrMainPage->MainPage();
         break;
 } // end case
-} else {
-switch ($_action) {
-    case 'confirmexpense':
-        // display the tenant table
-        $t4mpsrTenants = new t4mpsrTenantsPage;
-        $t4mpsrTenants->ConfirmExpense($_POST);
-        break;
-    case 'mainpage':
-    default:
-        $t4mpsrMainPage = new t4mpsrMainPage;
-        $t4mpsrMainPage->LoginForm();
-        print('huhu');
-        break;
-}
-}
 ?>

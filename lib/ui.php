@@ -57,7 +57,7 @@ function LoginForm() {
     // Process template
     $this->tpl->assign('data', $this->t4mpsrMM->GetEntries());
     $this->tpl->assign('time', time());
-    $this->tpl->assign('login', 'oyeah');
+    $this->tpl->assign('login', 'yes');
     $this->tpl->display('mainpage.tpl');
  }
 
