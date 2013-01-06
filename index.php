@@ -7,15 +7,27 @@ require_once('config.php');
 require_once('lib/tenants.php');
 require_once('lib/ui.php');
 
-// var_dump($_POST);
 
-/// set the current action, if no action set display the main menu
+// set the current action, if no action set display the main menu
 $_action = isset($_POST['menuitem']) ? $_POST['menuitem'] : 'mainpage';
 
+session_start();
 
-$saltedpasshash=md5(T4MPSR_PASS . T4MPSR_SALT);
+// If no session key set just create one
+if (!isset($_SESSION['key'])) { $_SESSION['key'] = str_shuffle('abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#%$*'); };
 
-// var_dump($_COOKIE);
+// $saltedpasshash=md5(T4MPSR_PASS . T4MPSR_SALT);
+$sessionkey=md5($_SESSION['key']);
+
+if ($_action == 'remoteinfo' ) {
+   $skipAuth='yes';
+  } else {
+   $skipAuth='no';
+}
+
+// Cookie voodoo - side effect: remote info works only if no cookie set
+if ( $skipAuth == 'no' && isset($_COOKIE['t4mpsrauth']) && $_COOKIE['t4mpsrauth'] == $sessionkey ) {
+
 switch ($_action) {
     case 'confirmexpense':
         // display the tenant table
@@ -107,16 +119,31 @@ switch ($_action) {
         $t4mpsrTenants = new t4mpsrTenantsPage;
         $t4mpsrTenants->EditTenants();
         break;
-    case 'remoteinfo':
-        /// display the tenant table
-        $t4mpsrTenant = new t4mpsrTenants;
-        $key = $_POST['key'];
-        $t4mpsrTenant->getKeyInfo($key);
-        break;
     case 'mainpage':
     default:
         $t4mpsrMainPage = new t4mpsrMainPage;
         $t4mpsrMainPage->MainPage();
         break;
 } // end case
+} else { // No proper value for the cookie so new password required.
+switch ($_action) {
+    case 'remoteinfo':
+        $t4mpsrTenant = new t4mpsrTenants;
+        $key = $_POST['key'];
+        $t4mpsrTenant->getKeyInfo($key);
+        break;
+    case 'mainpage':
+    default:
+        if (T4MPSR_PASS == $_POST['pwd']) {
+              // Fine, set the cookie.
+              setcookie('t4mpsrauth', $sessionkey, 0, '/', $_SERVER['HTTP_HOST']);
+              $URL = $_SERVER['HTTP_REFERRER'];
+              header("Location: $URL");
+        } else {
+        $t4mpsrMainPage = new t4mpsrMainPage;
+        $t4mpsrMainPage->LoginForm();
+        }
+        break;
+}
+}
 ?>
