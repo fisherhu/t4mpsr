@@ -1,5 +1,5 @@
 #!/bin/bash
 
-rm -r ../doc/Doxygen/*
+rm -r /tmp/t4mpsrdoc/*
 
 doxygen conf/doxygen.conf > /tmp/doxgen.log
